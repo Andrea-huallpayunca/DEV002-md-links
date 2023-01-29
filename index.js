@@ -1,3 +1,4 @@
-module.exports = () => {
-  // ...
-};
+
+const mdLinks  = (path, options) => new Promise ((resolve, reject)=>{
+    
+})
