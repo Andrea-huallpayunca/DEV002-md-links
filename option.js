@@ -5,23 +5,36 @@
 
 const fs = require('fs');
 const path = require('path');
+// const { argv } = require('process');
+// const { env } = require('process');
 const archivo = './src/prueba.txt'
 
-// ----- Leer un archivo y consolear contenido -----
-// fs.readFile(archivo,'utf-8',(err,data)=>{
-//   if(err){
-//     throw (err)
-//   } else {
-//     console.log(data)
-//   }
-// })
 
-// const url = https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)
+// const validateFalse = [{href,
+//   text,
+//   file
+// }]
+
+// ----- Leer un archivo y consolear contenido -----
+
+fs.readFile(archivo,'utf-8',(err,data)=>{
+  if(err){
+    throw (err)
+  } else {
+    let text = data.substring(0,50)
+    // console.log(text +'...')
+    // validateFalse.text= text
+  }
+})
+
+// ----- Consoleando Links -----
+
 const url = /\((https?:\/\/[^\s$.?#].[^\s]*)\)/g ;
 const direccionR = /\[\w.+/g;
 const link = /\[([^\[\]]*?)\]\((https?:\/\/[^\s$.?#].[^\s]*)\)/g ;
-const direccionRelativa = /\(.\/\?:\/\/[^\s$.?#].[^\s]*)\)/g ;
+// const direccionRelativa = /\(.\/\?:\/\/[^\s$.?#].[^\s]*)\)/g ;
 // ![](./inicio.png);
+
 
 fs.readFile('README.md', 'utf-8', (err, data)=>{
   if(err){
@@ -37,7 +50,8 @@ fs.readFile('README.md', 'utf-8', (err, data)=>{
     //                 '[Markdown](https://es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado',
     let linksU = data.toString().match(url);
     // --> retorna lista de: '(https://es.wikipedia.org/wiki/Markdown)',
-    let linksDR = data.toString().match(direccionRelativa)
+
+    // let linksDR = data.toString().match(direccionRelativa)
 
     // array += links
     // console.log(array)
@@ -45,7 +59,8 @@ fs.readFile('README.md', 'utf-8', (err, data)=>{
     // console.log(links)
     // console.log(linksD)
     // console.log(linksU)
-    console.log(linksDR)
+
+    // console.log(linksDR) fail
   }
 })
 
@@ -82,3 +97,44 @@ console.log(path.basename(archivo))
 //     });
 //   }
 // });
+
+// argv.forEach((val, index) => {
+//   console.log(`${index}: ${val}`);
+//   // validateFalse.file = `${index[1]}: ${val}`
+// });
+
+// retorna : 0: C:\Program Files\nodejs\node.exe
+//           1: C:\Proyectos\Proyecto 4\DEV002-md-links\option
+
+// console.log(env)
+
+// console.log(validateFalse)
+
+
+// let link1 = https://es.wikipedia.org/wiki/Markdowns
+
+// fsPromises.readlink(link1, 'utf-8')
+
+// const { readFile, readlink } = require('node:fs/promises');
+const getTextLink = link => link.match(/[^[\]]+/)[0];
+console.log('Este es el texto ' + getTextLink(archivo))
+
+const http = require('http')
+let link1 = 'https://es.wikipedia.org/wiki/Markdowns'
+
+// const status = statusCode => (statusCode !== 200 ? 'fail' : 'ok');
+// const getObjStatus = (statusCode, elem) => ({
+//   ...elem,
+//   status: statusCode,
+//   message: status(statusCode),
+// });
+
+// const getProtocol = protocol => (protocol === 'https' ? https : http);
+
+
+// readlink(link1,'utf-8')
+const ext =path.parse(archivo)
+console.log(ext.name   )
+console.log(ext.ext)
+console.log(path.parse('test'))
+
