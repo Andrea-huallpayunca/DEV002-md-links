@@ -67,3 +67,49 @@ console.log(fs.existsSync(archivo))
 //   }
 // })
 
+// ------------------------------------------------------------------------------------------
+const path = 'README.md'
+readFile(path, { encoding: 'utf8' });
+// const url = /\(https?:\/\/[^\s$.?#].[^\s]*\)/g ;
+
+
+
+console.log(getLinks(readFile(path)))
+
+// abriendo 1 archivo-retornando objeto por link
+// readFile(path)
+// .then(data=>{
+//     // let arrayF = data.toString().match(url)
+//     let arrayF = getLinks(data);
+//     arrayF.forEach(element => {
+//                             console.log( {
+//                                 href: element,
+//                                 text: parse(element).name,
+//                                 file: join(__dirname, path)
+//                             }  )
+//                          });
+    
+
+// })
+
+    
+// const LeerArchivo =(path, data) =>{
+//     readFile(path)
+
+// }
+
+// readdir(path)
+//     .then(data=>{
+//         let arrayD = []
+//         data.forEach(element=>{
+//             if(parse(element).ext !== ''){
+//                 readdir(path)
+//             } else if (parse(element).ext == '.md'){
+//                 readFile(element)
+//             }
+//         })
+//     })
+
+module.exports={
+    mdLinks,
+}
