@@ -68,6 +68,7 @@ fs.readFile('README.md', 'utf-8', (err, data)=>{
 console.log(path.basename(archivo))
 // --> retorna: prueba.txt
 
+
 // ----- Leer directorios -----
 // fs.readdir('test', 'utf-8', (err,files)=>{
 //   if(err){
@@ -116,8 +117,9 @@ console.log(path.basename(archivo))
 // fsPromises.readlink(link1, 'utf-8')
 
 // const { readFile, readlink } = require('node:fs/promises');
-const getTextLink = link => link.match(/[^[\]]+/)[0];
-console.log('Este es el texto ' + getTextLink(archivo))
+
+// const getTextLink = link => link.match(/[^[\]]+/)[0];
+// console.log('Este es el texto ' + getTextLink(archivo))
 
 const http = require('http')
 let link1 = 'https://es.wikipedia.org/wiki/Markdowns'
