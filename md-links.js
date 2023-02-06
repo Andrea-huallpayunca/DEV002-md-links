@@ -1,15 +1,22 @@
 const { existsSync } = require('node:fs');
-const { readFile, readdir} = require('node:fs/promises');
+
+// Validar si la ruta existe
+const existRoute = (route)=>existsSync(route)
+// const { readFile, readdir} = require('node:fs/promises');
+
+
 const { resolve, join, parse, isAbsolute } = require('node:path');
 
+const partsRoute =(route)=> parse(route)
 
 const getLinks = (data) => {
-   let url = /\(https?:\/\/[^\s$.?#].[^\s]*\)/g ;
+   let url = /https?:\/\/[^\s$.?#].[^\s]*/g ;
    let arrayL = data.toString().match(url)
    return  arrayL
 }
 
-const validateFalse = (data) =>{
+
+const validateFalse = (data, archivo) =>{
     data.forEach(element => {
         console.log( {
             href: element,
@@ -18,59 +25,14 @@ const validateFalse = (data) =>{
         })
 })}
 
-const mdLinks  = (path, options) => new Promise ((resolve, reject)=>{
-
-    if(existsSync(path) ){
-
-        if(parse(path).ext =='.md'){
-           readFile(path)
-           .then(data=>{
-            // console.log(getLinks(data))
-            resolve (getLinks(data));
-           })
-           
-        } 
-        //  if(parse(path).ext ===''){
-        //     // if(isAbsolute(path)){
-            
-        //     console.log('REaddir '+readdir(path))
-        //     readdir(path)
-        //     .then(data=>{
-        //         data.forEach(element=>{
-        //             mdLinks(element)
-        //         })
-        //     })
-        // // } else {
-        //     //    let newPath= resolve(path);
-        //     //    mdLinks(newPath)
-        //     // }
-        // }
-    }
-    else {
-        throw Error ('La ruta ingresada no existe en este directorio.')
-    }
-})
 
 
-let archivo ='README.md'
-let carpeta = 'C:\Proyectos\Proyecto 4\DEV002-md-links\Prueba'
-let carpeta2 = 'Prueba'
-
-mdLinks(archivo)
-  .then( links => validateFalse(links)
-//     links => {
-//                 links.forEach(element => {
-//                                     console.log( {
-//                                         href: element,
-//                                         text: parse(element).name,
-//                                         file: join(__dirname, archivo)
-//                                     })
-//                 });
-
-//     // => [{ href, text, file }, ...]
-//   }
-  )
-  .catch(console.error);
+module.exports={
+    existRoute,
+    partsRoute,
+    getLinks,
+    validateFalse,
+}
 // ------------------------------------------------------------
 // console.log('Es ruta absoluta?'+isAbsolute(carpeta))
 // console.log('Resolve?'+resolve(carpeta))
