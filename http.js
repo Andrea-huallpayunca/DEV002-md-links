@@ -1,16 +1,13 @@
-const http = require('http')
-const https= require('https')
+const axios = require ('axios')
 
-let url = 'https://nodejs.org/api/fs.html'
+const url1 = 'https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/'
+// const url1 = 'https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/GlobalObjects/Array/'
 
-const status = statusCode => (statusCode !== 200 ? 'fail' : 'ok');
-const getProtocol = protocol => (protocol === 'https' ? https : http);
+const promesa1 = axios.get(url1)
 
-const getObjStatus = (statusCode, elem) => ({
-  ...elem,
-  status: statusCode,
-  message: status(statusCode),
-});
+promesa1.then(console.log)
+// const status= promesa1.then(data=> data.status)
 
-const isFileMd = route => /\.md/.test(route);
-const isOption = option => option !== undefined && option.validate;
+// const statusText= promesa1.then(data=> data.statusText)
+// status.then(console.log)
+

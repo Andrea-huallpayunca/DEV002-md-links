@@ -1,12 +1,9 @@
-const { readdirSync, readFile, fstat, Dirent } = require('node:fs');
-const { builtinModules } = require('node:module');
+const { readdirSync, readFile, fstat } = require('node:fs');
 const path = require('node:path');
-// const { readFile, readdir} = require('node:fs/promises');
-// const { resolve } = require('node:path');
 
-let carpeta = 'C:\Proyectos\Proyecto 4\DEV002-md-links\Prueba'
 let carpeta2 = 'Prueba'
 // ---- Para ver si es directorio
+
 
 // ---- Leyendo carpetas
 const elementDirectory=(path)=>readdirSync(path, 'utf-8')
@@ -62,35 +59,35 @@ function filesMd(route){
 
 
 let prueba = filesMd(carpeta2)
+console.log(prueba)
+// let arrayL =[]
 
-let arrayL =[]
+// function linksFiles(files){
 
-function linksFiles(files){
+//     files.forEach(file=>{
+//        readFile(file,(err, data)=>{
+//         if(err){
+//             throw 'Error Links'
+//         } else if (data){
+//             let datos = getLinks(data)
+//             arrayL.push(datos)
+//         }
+//        })          
+//     })
 
-    files.forEach(file=>{
-       readFile(file,(err, data)=>{
-        if(err){
-            throw 'Error Links'
-        } else if (data){
-            let datos = getLinks(data)
-            arrayL.push(datos)
-        }
-       })          
-    })
-
-    return arrayL
-}
+//     return arrayL
+// }
 
 // console.log(linksFiles(prueba))   
 // linksFiles(prueba)
 
 // console.log(!partsRoute(carpeta2).ext)
 
-console.log(filesMd(carpeta2))
+// console.log(filesMd(carpeta2))
 
 // console.log(prueba(carpeta2))
 // console.log(linksFiles(filesMd(carpeta2)))
-const archivo ='README.md'
+// const archivo ='README.md'
 // console.log(archivo.length)    
 
 
