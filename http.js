@@ -11,3 +11,6 @@ const getObjStatus = (statusCode, elem) => ({
   status: statusCode,
   message: status(statusCode),
 });
+
+const isFileMd = route => /\.md/.test(route);
+const isOption = option => option !== undefined && option.validate;
