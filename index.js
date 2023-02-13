@@ -1,13 +1,15 @@
 const {
   existRoute,
   getLinks,
-  partsRoute
+  partsRoute,
+  arrayN,
+  filesMd, 
+  linksFiles
  } = require("./md-links");
- const { readFile, readdir} = require('node:fs/promises');
- const {arrayN, filesMd} =require('./functions')
+//  const { readFile, readdir} = require('node:fs/promises');
+//  const {arrayN, filesMd, linksFiles} =require('./functions')
 
-let carpeta = 'C:\Proyectos\Proyecto 4\DEV002-md-links\Prueba'
-let carpeta2 = 'Prueba'
+// let carpeta2 = 'Prueba'
 
 const mdLinks  = (path, options) => {
   return new Promise ((resolve, reject)=>{
@@ -15,43 +17,30 @@ const mdLinks  = (path, options) => {
   if(existRoute(path) ){
 
       if(partsRoute(path).ext =='.md'){
-         readFile(path)
-         .then(data=>{
-          // console.log(getLinks(data))
-          resolve (getLinks(data));
-         })
+        // resuelve array de links
+        resolve(linksFiles(path).then(data=> getLinks(data)))
          
       } 
-      // else if (){
+      else if(!partsRoute(path).ext){
+        arrayN;
+        let newData=filesMd(path);
 
-      // } else {
-      //   reject( new Error ('No se encontraron archivos .md'))
-      // }
-      // else if (!partsRoute(element).ext){
-      //   arrayN;
-      //   let newData=filesMd(path);
-      //   resolve(mdLinks(newData))
-      // }
+        // newData.forEach(file=>{
+        //   resolve(linksFiles(file).then(data=> getLinks(data)))
+        // })
+        // resuelve array de archivos .md
+        resolve(newData)
+      } else {
+        reject( new Error ('No se encontraron archivos .md'))
+      }
+
+
   }
   else {
       reject('La ruta ingresada no existe.')
   }
 })}
 
-
-
-
-// mdLinks("./some/example.md", { validate: true })
-//   .then(links => {
-//     // => [{ href, text, file, status, ok }, ...]
-//   })
-//   .catch(console.error);
-
-// mdLinks("./some/dir")
-//   .then(links => {
-//     // => [{ href, text, file }, ...]
-//   })
-//   .catch(console.error);
 
 module.exports={
   mdLinks

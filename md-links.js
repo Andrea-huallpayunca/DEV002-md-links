@@ -1,4 +1,4 @@
-const { existsSync } = require('node:fs');
+const { existsSync, readdirSync, readFile } = require('node:fs');
 const { resolve, join, parse, isAbsolute } = require('node:path');
 const axios = require ('axios')
 
@@ -18,6 +18,41 @@ const getLinks = (data) => {
    return  arrayL
 }
 
+// ---- Para leer archivos y extraer links 
+
+const linksFiles =(file)=>{
+    return new Promise ((resolve, reject)=>{
+        readFile(file, (err, data)=>{
+            if (err){
+                reject(err)
+            } else if (data){
+                resolve(data)
+            }
+        })
+    })
+}
+
+// ---- Leyendo carpetas
+const elementDirectory=(path)=>readdirSync(path, 'utf-8')
+
+// ---- Para extraer todos los archivos md de carpetas
+let arrayN=[];
+function filesMd(route){
+    
+    let data = elementDirectory(route);
+    data.forEach(element => {
+        if(partsRoute(element).ext=='.md'){
+            let name=join(route,element)
+            arrayN.push(name)
+        } else if(!partsRoute(element).ext){
+            let newRoute = join(route,element)
+            // let newRoute= resolve(element)
+            filesMd(newRoute)
+        }
+    });
+    return arrayN
+    
+}
 
 // Retorno en False
 const validateFalse = (data, archivo) =>{
@@ -25,25 +60,30 @@ const validateFalse = (data, archivo) =>{
         console.log( {
             href: element,
             text: parse(element).name,
-            file: join(__dirname, archivo)
+            file: archivo
+            // file: join(__dirname, archivo)
         })
 })}
 
 // Retorno en true
-const axiosPromise = (url)=>{
+const axiosPromise = (url, archivo)=>{
     return axios.get(url)
     .then((respuesta)=>{
         if (respuesta.status === 201 || respuesta.status === 200) {
             return {
                 url,
+                file: archivo,
                 success: true,
-                status: respuesta.status
+                status: respuesta.status,
+                message: 'ok'
             };
         } else {
             return {
                 url,
+                file: archivo,
                 success: false,
-                status: respuesta.status
+                status: respuesta.status,
+                message: 'fail'
             }
         }
     })
@@ -56,11 +96,11 @@ const axiosPromise = (url)=>{
     });
 }
 
-const validateTrue = (data)=>{
+const validateTrue = (data, archivo)=>{
     
     data.forEach(
         element=>{
-            axiosPromise(element).then(console.log)
+            axiosPromise(element, archivo).then(datos=> datos)
         }
     )
 }
@@ -70,5 +110,8 @@ module.exports={
     partsRoute,
     getLinks,
     validateFalse,
-    validateTrue
+    validateTrue,
+    arrayN,
+    filesMd,
+    linksFiles
 }
