@@ -3,24 +3,27 @@ const { resolve, join, parse, isAbsolute } = require('node:path');
 const axios = require ('axios')
 
 
-// Validar si la ruta existe
+// ---- Validar si la ruta existe
 const existRoute = (route)=>existsSync(route)
 
-// Para ver la extension de archivos
+// ---- Para ver la extension de archivos
 const partsRoute =(route)=> parse(route)
 
-// Extraer links de archivos
+// ---- Extraer links de archivos
 const getLinks = (data) => {
    let url = /https?:\/\/[^\s$.?#].[^\s]*/g ;
 //    let url = /\[([^\[\]]+)\]\(([^\(\)]+)\)/g
    let arrayL = data.toString().match(url)
 //    let arrayN = arrayL.forEach(element=> element.match(/\[([^\[]+)\]\((.*)\)/))
-   return  arrayL
+if(arrayL && arrayL!== undefined){
+     return  arrayL  
 }
 
-// ---- Para leer archivos y extraer links 
+}
 
-const linksFiles =(file)=>{
+// ----() Para leer archivos y extraer links 
+
+const readFiles =(file)=>{
     return new Promise ((resolve, reject)=>{
         readFile(file, (err, data)=>{
             if (err){
@@ -31,7 +34,14 @@ const linksFiles =(file)=>{
         })
     })
 }
-
+// const linkFiles =(file)=>{
+//     readFiles(file)
+//     .then(data=>{
+//        let arrayL= getLinks(data)
+//        arrayL.forEach(link=> 
+//         )
+//     })
+// }
 // ---- Leyendo carpetas
 const elementDirectory=(path)=>readdirSync(path, 'utf-8')
 
@@ -44,7 +54,8 @@ function filesMd(route){
         if(partsRoute(element).ext=='.md'){
             let name=join(route,element)
             arrayN.push(name)
-        } else if(!partsRoute(element).ext){
+        } 
+        else if(!partsRoute(element).ext){
             let newRoute = join(route,element)
             // let newRoute= resolve(element)
             filesMd(newRoute)
@@ -54,7 +65,23 @@ function filesMd(route){
     
 }
 
-// Retorno en False
+// ---- Para las estadísticas
+const stats =(arrayLinks)=>{
+    let unique = [];
+
+    arrayLinks.forEach(function (item) {
+    if(!unique.includes(item)){
+        unique.push(item);
+    }
+    }); 
+
+    return {
+        Total: arrayLinks.length,
+        Unique: unique.length 
+    }
+}
+
+// ---- Retorno en False
 const validateFalse = (data, archivo) =>{
     data.forEach(element => {
         console.log( {
@@ -64,8 +91,20 @@ const validateFalse = (data, archivo) =>{
             // file: join(__dirname, archivo)
         })
 })}
+// const validateExp =(data,archivo) =>{
+//     if(archivo)
+// }
+// const validateFalse = (data, archivo) =>{
+//     data.forEach(element => {
+//        return {
+//             href: element,
+//             text: parse(element).name,
+//             file: archivo
+//             // file: join(__dirname, archivo)
+//         }
+// })}
 
-// Retorno en true
+// ---- Retorno en true
 const axiosPromise = (url, archivo)=>{
     return axios.get(url)
     .then((respuesta)=>{
@@ -113,5 +152,6 @@ module.exports={
     validateTrue,
     arrayN,
     filesMd,
-    linksFiles
+    readFiles,
+    axiosPromise
 }
