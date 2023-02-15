@@ -13,7 +13,7 @@ console.log(option1)
 
 if(!option1){
     mdLinks(ruta)
-    .then(links=>links)
+    .then(links=>console.log(links))
 } else if (option1=='--validate' && !option2){
     mdLinks(ruta,'true')
     .then(links=>links)

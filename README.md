@@ -19,7 +19,7 @@ Librería que te permite acceder mediante línea de comando a una API para resol
 Ingrese a la terminal de su editor de código y digite lo siguiente.
 
 ```sh
-$ npm install -g aline-camargo/SAP003-md-links
+$ npm install -g nombreUser/DEV002-md-links
 ```
 De esta forma se descargará el paquete.
 

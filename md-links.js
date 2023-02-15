@@ -64,7 +64,7 @@ const mdLinks  = (path, options) => {
 // let archivo = 'README.md'
 // // let carpeta2 = 'Prueba'
 
-// mdLinks(archivo,'true')
+// mdLinks(archivo)
 // .then(console.log)
 module.exports={
   mdLinks
