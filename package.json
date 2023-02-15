@@ -1,6 +1,6 @@
 {
   "name": "md-links",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "links de archivos markdown",
   "author": "Andrea Huallpayunca",
   "license": "ISC",
@@ -34,7 +34,13 @@
     "type": "git",
     "url": "git+https://github.com/Andrea-huallpayunca/DEV002-md-links.git"
   },
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "javascript",
+    "node",
+    "markdown",
+    "jest"
+  ],
   "bugs": {
     "url": "https://github.com/Andrea-huallpayunca/DEV002-md-links/issues"
   },
