@@ -12,25 +12,13 @@ const partsRoute =(route)=> parse(route)
 // ---- Extraer links de archivos
 const link = /\[([^\[\]]*?)\]\((https?:\/\/[^\s$.?#].[^\s]*)\)/g ;
 
-// const getLinks = (data) => {
-//    let url = /https?:\/\/[^\s$.?#].[^\s]*/g ;
-// //    let url = /\[([^\[\]]+)\]\(([^\(\)]+)\)/g
-//    let arrayL = data.toString().match(url)
-// //    let arrayN = arrayL.forEach(element=> element.match(/\[([^\[]+)\]\((.*)\)/))
-// if(arrayL && arrayL!== undefined){
-//      return  arrayL  
-// }
-
-// }
 const getLinks = (data) => {
     let url =  /\[([^\[\]]*?)\]\((https?:\/\/[^\s$.?#].[^\s]*)\)/g ;
- //    let url = /\[([^\[\]]+)\]\(([^\(\)]+)\)/g
     let arrayL = data.toString().match(url)
- //    let arrayN = arrayL.forEach(element=> element.match(/\[([^\[]+)\]\((.*)\)/))
+
  if(arrayL && arrayL!== undefined){
       return  arrayL  
  }
- 
  }
 
 // ----() Para leer archivos y extraer links 
@@ -46,14 +34,7 @@ const readFiles =(file)=>{
         })
     })
 }
-// const linkFiles =(file)=>{
-//     readFiles(file)
-//     .then(data=>{
-//        let arrayL= getLinks(data)
-//        arrayL.forEach(link=> 
-//         )
-//     })
-// }
+
 // ---- Leyendo carpetas
 const elementDirectory=(path)=>readdirSync(path, 'utf-8')
 
@@ -78,28 +59,6 @@ function filesMd(route){
 }
 
 // ---- Retorno en False
-// const validateFalse = (data, archivo) =>{
-//     data.forEach(element => {
-//         console.log( {
-//             href: element,
-//             text: parse(element).name,
-//             file: archivo
-//             // file: join(__dirname, archivo)
-//         })
-// })}
-// const validateFalse = (data, archivo) =>{
-//     let validacion=[]
-//     data.forEach(element => {
-
-//         validacion.push( {
-//             href: element,
-//             text: parse(element).name,
-//             file: archivo
-//             // file: join(__dirname, archivo)
-//         })}
-//         )
-//     return validacion
-// }
 
 const validateFalse = (data, archivo) =>{
     let validacion=[]
@@ -118,36 +77,9 @@ const validateFalse = (data, archivo) =>{
         )
     return validacion
 }
+
 // ---- Retorno en true
-// const axiosPromise = (url, archivo)=>{
-//     return axios.get(url)
-//     .then((respuesta)=>{
-//         if (respuesta.status === 201 || respuesta.status === 200) {
-//             return {
-//                 url,
-//                 file: archivo,
-//                 success: true,
-//                 status: respuesta.status,
-//                 message: 'ok'
-//             };
-//         } else {
-//             return {
-//                 url,
-//                 file: archivo,
-//                 success: false,
-//                 status: respuesta.status,
-//                 message: 'fail'
-//             }
-//         }
-//     })
-//     .catch(function (error) {
-//         return {
-//             url,
-//             success: false,
-//             status: error.code
-//         }
-//     });
-// }
+
 const axiosPromise = (url, archivo)=>{
     let dividir= url.split(']')
     let texto= dividir[0].replace('[','')
@@ -183,14 +115,6 @@ const axiosPromise = (url, archivo)=>{
     });
 }
 
-// const validateTrue = (data, archivo)=>{
-    
-//     data.forEach(
-//         element=>{
-//             axiosPromise(element, archivo).then(datos=> datos)
-//         }
-//     )
-// }
 
 // ---- Para las estadísticas
 const stats =(arrayLinks)=>{
@@ -208,6 +132,7 @@ const stats =(arrayLinks)=>{
     }
 }
 
+// -- Para --stats --validate (falta terminar)
 const statsAndV =(arrayLinks)=>{
     return new Promise((resolve, reject) => {
     let unique = [];

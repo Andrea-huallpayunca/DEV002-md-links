@@ -13,14 +13,13 @@ const mdLinks  = (path, options) => {
 
   if(existRoute(path) ){
 
-      // let arrayLinksDe=''
       if(partsRoute(path).ext =='.md'){
-        // // resuelve array de links
-        // resolve(readFiles(path).then(data=> getLinks(data)))
+
         readFiles(path)
         .then(
           data=> {
             let arrayLinksDe=''
+            // array de links
             arrayLinksDe=getLinks(data)
 
             if(!options){
@@ -34,14 +33,15 @@ const mdLinks  = (path, options) => {
           )
       } 
       else if(!partsRoute(path).ext){
+        // array de archivos md
         let arrayFile=filesMd(path)
         arrayFile.forEach(file=>readFiles(file)
                       .then(data=> {
                        let datos=getLinks(data)
-                        // console.log(datos)
+
                         if(datos){
                           if(!options){
-                            // console.log(validateFalse(arrayLinks,file))
+
                             resolve(validateFalse(datos,file))
                             
                           } else if (options=='true'){
@@ -61,11 +61,11 @@ const mdLinks  = (path, options) => {
   }
 })}
  
-let archivo = 'README.md'
-// let carpeta2 = 'Prueba'
+// let archivo = 'README.md'
+// // let carpeta2 = 'Prueba'
 
-mdLinks(archivo,'true')
-.then(console.log)
+// mdLinks(archivo,'true')
+// .then(console.log)
 module.exports={
   mdLinks
 }
