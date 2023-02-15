@@ -10,7 +10,6 @@ const existRoute = (route)=>existsSync(route)
 const partsRoute =(route)=> parse(route)
 
 // ---- Extraer links de archivos
-const link = /\[([^\[\]]*?)\]\((https?:\/\/[^\s$.?#].[^\s]*)\)/g ;
 
 const getLinks = (data) => {
     let url =  /\[([^\[\]]*?)\]\((https?:\/\/[^\s$.?#].[^\s]*)\)/g ;
