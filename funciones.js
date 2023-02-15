@@ -161,7 +161,6 @@ const axiosPromise = (url, archivo)=>{
                 href:href2,
                 texto: texto,
                 file: archivo,
-                success: true,
                 status: respuesta.status,
                 message: respuesta.statusText
             };
@@ -170,7 +169,6 @@ const axiosPromise = (url, archivo)=>{
                 href:href2,
                 texto: texto,
                 file: archivo,
-                success: false,
                 status: respuesta.status,
                 message: 'fail'
             }
@@ -230,9 +228,6 @@ const statsAndV =(arrayLinks)=>{
     })
 
 }
-
-// axios.get('https://www.youtube.com/watch?v=Lub5mY4J')
-// .then(console.log)
 
 module.exports={
     existRoute,
