@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { stats} = require('./funciones')
+const { stats, statsAndV} = require('./funciones')
 const { mdLinks } = require ('./md-links')
 
 // ---- Para --validate o --stats
@@ -8,17 +8,29 @@ const { mdLinks } = require ('./md-links')
 const ruta = process.argv[2]
 const option1  = process.argv[3]
 const option2  = process.argv[4]
-console.log(option1)
+// console.log(option1)
 
 
 if(!option1){
-    mdLinks(ruta)
+    mdLinks(ruta,{validate:false})
     .then(links=>console.log(links))
+    .catch(console.log)
+
 } else if (option1=='--validate' && !option2){
-    mdLinks(ruta,'true')
-    .then(links=>links)
+    mdLinks(ruta,{validate:true})
+    .then(links=>console.log(links))
+    .catch(console.log)
+
 } else if (option1=='--stats'&& !option2){
 // console.log('hola')
-mdLinks(ruta)
-.then(links=>console.log(stats(links)))
-} 
+    mdLinks(ruta,{validate:false})
+    .then(links=>console.log(stats(links)))
+    .catch(console.log)
+    
+} else if(option1=='--stats' && option2=='--validate'){
+    mdLinks(ruta,{validate:true})
+    .then(links=>{
+        console.log(statsAndV(links))
+    })
+    .catch(console.log)
+}

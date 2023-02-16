@@ -5,10 +5,10 @@ const {
   filesMd, 
   readFiles,
   validateFalse,
-  axiosPromise
+  allPromise
  } = require("./funciones.js"); 
-
-const mdLinks  = (path, options) => {
+ 
+const mdLinks  = (path,options={validate}) => {
   return new Promise ((resolve, reject)=>{
 
   if(existRoute(path) ){
@@ -18,16 +18,20 @@ const mdLinks  = (path, options) => {
         readFiles(path)
         .then(
           data=> {
-            let arrayLinksDe=''
+            // let arrayLinksDe=''
             // array de links
-            arrayLinksDe=getLinks(data)
+           let arrayLinksDe=getLinks(data)
 
-            if(!options){
+            if(options.validate==false){
               resolve(validateFalse(arrayLinksDe,path))
-            } else if (options=='true'){
-              arrayLinksDe.forEach(
-                element=> resolve(axiosPromise(element,path).then(console.log))
-              )
+
+            } else if (options.validate==true){
+              // console.log('true')
+              let arrayFalse=validateFalse(arrayLinksDe,path)
+              const arrayPromises=allPromise(arrayFalse)
+              const onePromise=Promise.all(arrayPromises)
+              resolve(onePromise)
+
             }
           }
           )
@@ -40,20 +44,24 @@ const mdLinks  = (path, options) => {
                        let datos=getLinks(data)
 
                         if(datos){
-                          if(!options){
+                          if(options.validate==false){
 
                             resolve(validateFalse(datos,file))
                             
-                          } else if (options=='true'){
-                            datos.forEach(
-                              element=> resolve(axiosPromise(element,file).then(console.log))
-                            )
+                          } else if (options.validate==true){
+                            // datos.forEach(
+                            //   element=> resolve(axiosPromise(element,file).then(console.log))
+                            // )
+                            let arrayFalse=validateFalse(datos,path)
+                            const arrayPromises=allPromise(arrayFalse)
+                            const onePromise=Promise.all(arrayPromises)
+                            resolve(onePromise)
                           }
                         }
                       })
                       )
       } else {
-        reject( new Error ('No se encontraron archivos .md'))
+        reject('No se encontraron archivos .md')
       }
   }
   else {
@@ -62,10 +70,15 @@ const mdLinks  = (path, options) => {
 })}
  
 // let archivo = 'README.md'
-// // let carpeta2 = 'Prueba'
+const archivo= 'Prueba/readmePrueba.md'
+// let carpeta2 = 'Prueba'
 
-// mdLinks(archivo)
+// mdLinks(carpeta2,'true')
 // .then(console.log)
+// añadir catch
+// mdLinks(archivo,{validate:false})
+// .then(console.log)
+
 module.exports={
   mdLinks
 }

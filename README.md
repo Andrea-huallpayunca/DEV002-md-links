@@ -19,7 +19,7 @@ Librería que te permite acceder mediante línea de comando a una API para resol
 Ingrese a la terminal de su editor de código y digite lo siguiente.
 
 ```sh
-$ npm install -g nombreUser/DEV002-md-links
+$ npm install -g Andrea-huallpayunca/md-links-andrea-huallpayunca
 ```
 De esta forma se descargará el paquete.
 
@@ -36,20 +36,21 @@ Estructura de la función:
 ##### Argumentos
 
 * `path`: Es la ruta del archivo del cual se quiere extraer los links. También puede ser la ruta de una carpeta.
-* `options`: Es la opcion sobre la cuál se tiene un valor de retorno.
+* `options`: Es un objeto con únicamente la siguiente propiedad:
+  - `validate`: Booleano que determina si se desea validar los links encontrados.
 
 ##### Valor de retorno
 
 La función **retorna una promesa** (`Promise`) que **resuelva a un arreglo**, donde cada objeto representa un link y contiene
 las siguientes propiedades
 
-Si options es igual a `false` o no se escribe, entonces retornará lo siguiente:
+Si options contiene `validate:false`, entonces retornará lo siguiente:
 
 * `href`: URL encontrada.
 * `text`: Texto que aparecía dentro del link (`<a>`).
 * `file`: Ruta del archivo donde se encontró el link.
 
-Si options es igual a `true`, entonces retornará lo siguiente:
+Si options contiene `validate:true`, entonces retornará lo siguiente:
 
 * `href`: URL encontrada.
 * `text`: Texto que aparecía dentro del link (`<a>`).
@@ -66,28 +67,28 @@ Al ser una función que retorna una promesa, deberá utilizar el `.then` para vi
 const mdLinks = require("md-links");
 
 // -- Ejemplo para archivo
-mdLinks("./some/example.md")
+mdLinks("./some/example.md",{validate:false})
   .then(links => { 
     console.log(links)
     // => [{ href, text, file }, ...]
 
   })
-  .catch(console.error);
+  .catch(console.log);
 
-mdLinks("./some/example.md",'true')
+mdLinks("./some/example.md",{validate:true})
   .then(links => {
     console.log(links)
     // => [{ href, text, file, status, ok }, ...]
   })
-  .catch(console.error);
+  .catch(console.log);
 
 // -- Ejemplo para una carpeta
-mdLinks("./some/dir")
+mdLinks("./some/dir",{validate:false})
   .then(links => {
     console.log(links)
     // => [{ href, text, file }, ...]
   })
-  .catch(console.error);
+  .catch(console.log);
 ```
 
 
@@ -102,9 +103,15 @@ La respuesta por defecto, en caso de solo digitar el path, será la siguiente:
 
 ```sh
 $ md-links ./some/example.md
-./some/example.md http://algo.com/2/3/ Link a algo
-./some/example.md https://otra-cosa.net/algun-doc.html algún doc
-./some/example.md http://google.com/ Google
+
+href: http://algo.com/2/3/
+text: Link a algo
+file: ./some/example.md
+
+href: https://otra-cosa.net/algun-doc.html
+text: algún doc
+file: ./some/example.md
+
 ```
 
 ##### Options
@@ -117,20 +124,41 @@ Retornará en consola, el arreglo con los valores de: href, texto, file, status,
 
 ```sh
 $ md-links ./some/example.md --validate
-./some/example.md http://algo.com/2/3/ ok 200 Link a algo
-./some/example.md https://otra-cosa.net/algun-doc.html fail 404 algún doc
-./some/example.md http://google.com/ ok 301 Google
+
+href: http://algo.com/2/3/
+text: Link a algo
+file: ./some/example.md
+status: 200
+message: Ok 
+
+href: https://otra-cosa.net/algun-doc.html
+text: algún doc
+file: ./some/example.md
+status: 404 
+message: fail
+
 ```
 ###### Para `--stats`
 
-Si pasamos la opción `--stats` el output (salida) será un texto con estadísticas
-básicas sobre los links.
+Si pasamos la opción `--stats` el output (salida) será un objeto con las propiedades Total (links en total) y Unique (links únicos).
 
 ```sh
 $ md-links ./some/example.md --stats
-Total: 3
-Unique: 3
+Total: 2
+Unique: 2
 ```
+
+Si escribimos ambas opciones el output será un objeto con las propiedades Total (links en total), Unique (links únicos) y Broken (links rotos).
+
+```sh
+$ md-links ./some/example.md --stats --validate
+
+Total: 2
+Unique: 2
+Broken: 1
+
+```
+
 
 ***
 

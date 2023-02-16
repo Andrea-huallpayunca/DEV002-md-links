@@ -1,5 +1,5 @@
 const { existsSync, readdirSync, readFile } = require('node:fs');
-const { resolve, join, parse, isAbsolute } = require('node:path');
+const { join, parse} = require('node:path');
 const axios = require ('axios')
 
 
@@ -79,27 +79,61 @@ const validateFalse = (data, archivo) =>{
 
 // ---- Retorno en true
 
-const axiosPromise = (url, archivo)=>{
-    let dividir= url.split(']')
-    let texto= dividir[0].replace('[','')
-    let href1= dividir[1].replace('(','')
-    let href2=href1.replace(')','')
+// const axiosPromise = (url, archivo)=>{
+//     let dividir= url.split(']')
+//     let texto= dividir[0].replace('[','')
+//     let href1= dividir[1].replace('(','')
+//     let href2=href1.replace(')','')
 
-    return axios.get(href2)
+//     return axios.get(href2)
+//     .then(respuesta=>{
+//         if (respuesta.status == 200 || respuesta.status == 201) {
+//             return {
+//                 href:href2,
+//                 texto: texto,
+//                 file: archivo,
+//                 status: respuesta.status,
+//                 message: respuesta.statusText
+//             };
+//         } else {
+//             return {
+//                 href:href2,
+//                 texto: texto,
+//                 file: archivo,
+//                 status: respuesta.status,
+//                 message: 'fail'
+//             }
+//         }
+//     })
+//     .catch(function (error) {
+//         return {
+//             href:href2,
+//             success: false,
+//             status: error.code
+//         }
+//     });
+// }
+const allPromise = (arrayLinks)=>{
+    const validate= arrayLinks.map(
+        url=>{
+            // console.log(url.href)
+    return axios.get(url.href)
     .then(respuesta=>{
+        
         if (respuesta.status == 200 || respuesta.status == 201) {
+            // console.log('texto then', url)
             return {
-                href:href2,
-                texto: texto,
-                file: archivo,
+                href:url.href,
+                text: url.text,
+                file: url.file,
                 status: respuesta.status,
                 message: respuesta.statusText
             };
         } else {
             return {
-                href:href2,
-                texto: texto,
-                file: archivo,
+                href:url.href,
+                text: url.text,
+                file: url.file,
                 status: respuesta.status,
                 message: 'fail'
             }
@@ -107,60 +141,82 @@ const axiosPromise = (url, archivo)=>{
     })
     .catch(function (error) {
         return {
-            href:href2,
+            href:url.href,
             success: false,
-            status: error.code
+            status: error.response?400:'ERROR',
+            message:'fail'
         }
     });
+})
+return validate
 }
 
-
-// ---- Para las estadísticas
+// ---- Para las estadísticas --stats
 const stats =(arrayLinks)=>{
     let unique = [];
 
     arrayLinks.forEach(function (item) {
-    if(!unique.includes(item)){
-        unique.push(item);
+    if(!unique.includes(item.href)){
+        unique.push(item.href);
     }
     }); 
-
+    // let nuevo=new Set(unique)
     return {
         Total: arrayLinks.length,
-        Unique: unique.length 
+        Unique: unique.length
     }
 }
 
 // -- Para --stats --validate (falta terminar)
-const statsAndV =(arrayLinks)=>{
-    return new Promise((resolve, reject) => {
-    let unique = [];
+// const statsAndV =(arrayLinks)=>{
+//     return new Promise((resolve, reject) => {
+//     let unique = [];
+//     let broken=[]
+
+//     arrayLinks.forEach(function (item) {
+//     if(!unique.includes(item)){
+//         unique.push(item);
+//     }
+//     axiosPromise(item).then(datos=>broken.push(datos))
+//     }); 
+//     // resolve()
+//     // resolve({
+//     //     Total: arrayLinks.length,
+//     //     Unique: unique.length,
+//     //     Broken: broken.length 
+//     // })    
+//     })
+
+// }
+const statsAndV=(arrayLinks)=>{
     let broken=[]
-
-    arrayLinks.forEach(function (item) {
-    if(!unique.includes(item)){
-        unique.push(item);
-    }
-    axiosPromise(item).then(datos=>broken.push(datos))
-    }); 
-    // resolve()
-    // resolve({
-    //     Total: arrayLinks.length,
-    //     Unique: unique.length,
-    //     Broken: broken.length 
-    // })    
+    let unique=[]
+    arrayLinks.map(item=>{
+        if(!unique.includes(item.href)){
+            unique.push(item.href);
+        }
+        if(item.message=='fail'){
+            broken.push(item)
+        }
     })
-
+    return{
+        Total: arrayLinks.length,
+        Unique: unique.length,
+        Broken: broken.length
+    }
 }
+
+// readFile('README.md').then(console.log)
 
 module.exports={
     existRoute,
     partsRoute,
     getLinks,
+    elementDirectory,
     validateFalse,
     filesMd,
     readFiles,
-    axiosPromise,
     stats,
-    statsAndV
+    statsAndV,
+    allPromise
 }
