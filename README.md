@@ -19,7 +19,7 @@ Librería que te permite acceder mediante línea de comando a una API para resol
 Ingrese a la terminal de su editor de código y digite lo siguiente.
 
 ```sh
-$ npm install -g Andrea-huallpayunca/md-links-andrea-huallpayunca
+$ npm install md-links-andrea-huallpayunca
 ```
 De esta forma se descargará el paquete.
 
