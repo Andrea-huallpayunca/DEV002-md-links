@@ -1,6 +1,6 @@
 {
   "name": "md-links-andrea-huallpayunca",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "md-links.js",
   "bin": {
     "md-links": "cli.js"
